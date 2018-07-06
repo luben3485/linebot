@@ -16,8 +16,11 @@ var ban = ['051','242','244','246','284','304','601','603','604','605']
 course_reload()
 
 bot.on('message',function(event){
+  
   if(event.message.type == 'text'){
+    
      msg = event.message.text
+     console.log(event.source.userId,"說",msg)
      if(msg.indexOf('list')!= -1){
         var replyMsg = ''
         for(var i = 0 ; i < ban.length ; i++)
@@ -87,7 +90,7 @@ function course_reload() {
    
    var now_left = []
    for(var i = 0;i<courses.length;i++){
-    if(courses[i].left != '額滿'){
+    if(courses[i].left != '額滿' && parseInt(courses[i].left) <20){
       var isban = 0
       for(var j = 0 ; j < ban.length ; j++){
         if(courses[i].courseCode == ban[j])
@@ -102,7 +105,7 @@ function course_reload() {
       now_left.push(e)
     }
    })*/
-     console.log(now_left.length)
+     console.log("有"+now_left.length+"堂課還沒滿")
      var userId = 'Uf6f7dbaf8f52b91d217816ba6eb6cd8e'
      var sendMsg = '還有餘額 快去搶課!\n'
      if(now_left.length == 0){ 
@@ -111,7 +114,7 @@ function course_reload() {
      }else{
     
         for(var i = 0;i < now_left.length ; i++){
-           sendMsg = sendMsg  + 'A9 '+ now_left[i].courseCode + ' ' + now_left[i].courseName +' '+ now_left[i].time+'\n'
+           sendMsg = sendMsg  + 'A9 '+ now_left[i].courseCode + ' ' + now_left[i].courseName +' '+ now_left[i].time +',餘額' +now_left[i].left+'人\n'
         }
         bot.push(userId,sendMsg)
     }
