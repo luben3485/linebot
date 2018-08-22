@@ -1,0 +1,11 @@
+{
+  "name": "linebot",
+  "version": "1.0.0",
+  "description": "",
+  "main": "course.js",
+  "scripts": {
+    "start": "node ."
+  },
+  "author": "",
+  "license": "ISC"
+}
