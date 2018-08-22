@@ -5,7 +5,7 @@ const cheerio = require('cheerio')
 const request = require('request')
 const func = require('./logintest')
 const url = "http://course-query.acad.ncku.edu.tw/qry/qry001.php?dept_no=A9"
-var port = '2266' 
+var port = '2267' 
 var bot = linebot({
   channelId:'1560928773',
   channelSecret:'976346f7b7e48bd94df30eaf2529d4cd',
@@ -14,22 +14,29 @@ var bot = linebot({
 
 var timer
 var ban = ['051','242','244','246','284','304','601','603','604','605']
-var like = []
+var like = ['045','046','049','052','042','302','311','321','341','382','441','571','047','048']
 course_reload()
 
 bot.on('message',function(event){
+  console.log('87')
   console.log(event)
   
   if(event.message.type == 'text'){
     
      msg = event.message.text
      console.log(event.source.userId,"說",msg)
-     if(msg.indexOf('list')!= -1){
+     if(msg.indexOf('banlist')!= -1){
         var replyMsg = ''
         for(var i = 0 ; i < ban.length ; i++)
           replyMsg = replyMsg  + ban[i] + ' '
           event.reply(replyMsg)
-     }else if(msg.indexOf('unban')!= -1 ){
+     }else if(msg.indexOf('likelist')!= -1 ){
+        var replyMsg = ''
+        for(var i = 0 ; i < like.length ; i++)
+          replyMsg = replyMsg  + like[i] + ' '
+          event.reply(replyMsg)	
+     }	
+     else if(msg.indexOf('unban')!= -1 ){
        var index = -1
        for(var i =0 ; i < ban.length ; i++){
           var deleted = msg.split(' ')[1]
@@ -66,20 +73,7 @@ bot.on('message',function(event){
         course_reload()      
         event.reply("已開啟選課餘額通知！")
 
-     }else if(msg.indexOf('like') != -1){
-      	var likecode = msg.split(' ')[1]
-        var exist = 0
-        for(var j = 0 ; j < like.length ; j++){
-          if( likecode == like[j])
-              exist =1
-        }
-        if(exist){
-          event.reply(likecode + " 已在搶客名單內！")
-        }else{
-          like.push(likecode)
-          event.reply(likecode + " 已加入搶客名單！")
-        }
-     }else if(msg.indexOf('unlike') != -1){
+     }else if(msg.indexOf('dislike') != -1){
        var index = -1
        for(var i =0 ; i < like.length ; i++){
           var likeed = msg.split(' ')[1]
@@ -89,13 +83,26 @@ bot.on('message',function(event){
           }
        }
        if(index == -1)
-          event.reply(liked + " 不在搶客名單！")
+          event.reply(liked + " 不在搶課名單！")
        else{
           like.splice(index,1)
-          event.reply(liked + " 已排除搶客名單！")
+          event.reply(liked + " 已排除搶課名單！")
        
        }
 	
+     }else if(msg.indexOf('like') != -1){
+      	var likecode = msg.split(' ')[1]
+        var exist = 0
+        for(var j = 0 ; j < like.length ; j++){
+          if( likecode == like[j])
+              exist =1
+        }
+        if(exist){
+          event.reply(likecode + " 已在搶課名單內！")
+        }else{
+          like.push(likecode)
+          event.reply(likecode + " 已加入搶課名單！")
+        }
      }
      
   }
@@ -124,11 +131,7 @@ function course_reload() {
    
    var now_left = []
    for(var i = 0;i<courses.length;i++){
-<<<<<<< HEAD
-    if(courses[i].left != '額滿' && parseInt(courses[i].left) < 20 ){
-=======
     if(courses[i].left != '額滿' && parseInt(courses[i].left) <20){
->>>>>>> 10388530e36b6ea226fc89601869e9c2222d57f3
       var isban = 0
       for(var j = 0 ; j < ban.length ; j++){
         if(courses[i].courseCode == ban[j])
@@ -143,11 +146,7 @@ function course_reload() {
       now_left.push(e)
     }
    })*/
-<<<<<<< HEAD
      console.log("有" +now_left.length + "堂課還沒滿")
-=======
-     console.log("有"+now_left.length+"堂課還沒滿")
->>>>>>> 10388530e36b6ea226fc89601869e9c2222d57f3
      var userId = 'Uf6f7dbaf8f52b91d217816ba6eb6cd8e'
      var sendMsg = '還有餘額 快去搶課!\n'
      if(now_left.length == 0){ 
@@ -157,13 +156,17 @@ function course_reload() {
     
 //	func.autoAddClass('A9','061') 
         for(var i = 0;i < now_left.length ; i++){
-<<<<<<< HEAD
-           sendMsg = sendMsg  + 'A9 '+ now_left[i].courseCode + ' ' + now_left[i].courseName +' '+ now_left[i].time+ ",餘額" +now_left[i].left + "人\n"
-=======
-           sendMsg = sendMsg  + 'A9 '+ now_left[i].courseCode + ' ' + now_left[i].courseName +' '+ now_left[i].time +',餘額' +now_left[i].left+'人\n'
->>>>>>> 10388530e36b6ea226fc89601869e9c2222d57f3
+
+       	    sendMsg = sendMsg  + 'A9 '+ now_left[i].courseCode + ' ' + now_left[i].courseName +' '+ now_left[i].time+ ",餘額" +now_left[i].left + "人\n"
+	    for(var j = 0;j<like.length;j++){
+	    	if(now_left[i].courseCode == like[j]){
+            	    func.autoAddClass('A9',now_left[i].courseCode)
+		    var sendAddClassMsg = '已幫你搶到 ' + now_left[i].courseName + ' 時間為 ' + now_left[i].time + ' 爽齁ㄏㄏ\n' 
+		    bot.push(userId,sendAddClassMsg)
+		}
+	    }
         }
-        bot.push(userId,sendMsg)
+//        bot.push(userId,sendMsg)
     }
   }
   })
