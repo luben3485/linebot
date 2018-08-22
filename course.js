@@ -3,6 +3,7 @@ const express = require('express')
 const getJSON = require('get-json')
 const cheerio = require('cheerio')
 const request = require('request')
+const func = require('./logintest')
 const url = "http://course-query.acad.ncku.edu.tw/qry/qry001.php?dept_no=A9"
 var port = '2266' 
 var bot = linebot({
@@ -13,9 +14,11 @@ var bot = linebot({
 
 var timer
 var ban = ['051','242','244','246','284','304','601','603','604','605']
+var like = []
 course_reload()
 
 bot.on('message',function(event){
+  console.log(event)
   if(event.message.type == 'text'){
      msg = event.message.text
      if(msg.indexOf('list')!= -1){
@@ -58,7 +61,38 @@ bot.on('message',function(event){
         event.reply("已關閉選課餘額通知！")
      }else if(msg.indexOf('open') != -1){
         course_reload()      
-        event.reply("已開啟選課餘額通知！") 
+        event.reply("已開啟選課餘額通知！")
+
+     }else if(msg.indexOf('like') != -1){
+      	var likecode = msg.split(' ')[1]
+        var exist = 0
+        for(var j = 0 ; j < like.length ; j++){
+          if( likecode == like[j])
+              exist =1
+        }
+        if(exist){
+          event.reply(likecode + " 已在搶客名單內！")
+        }else{
+          like.push(likecode)
+          event.reply(likecode + " 已加入搶客名單！")
+        }
+     }else if(msg.indexOf('unlike') != -1){
+       var index = -1
+       for(var i =0 ; i < like.length ; i++){
+          var likeed = msg.split(' ')[1]
+          if(liked == like[i]){
+            index = i
+            break
+          }
+       }
+       if(index == -1)
+          event.reply(liked + " 不在搶客名單！")
+       else{
+          like.splice(index,1)
+          event.reply(liked + " 已排除搶客名單！")
+       
+       }
+	
      }
      
   }
@@ -87,7 +121,7 @@ function course_reload() {
    
    var now_left = []
    for(var i = 0;i<courses.length;i++){
-    if(courses[i].left != '額滿'){
+    if(courses[i].left != '額滿' && parseInt(courses[i].left) < 20 ){
       var isban = 0
       for(var j = 0 ; j < ban.length ; j++){
         if(courses[i].courseCode == ban[j])
@@ -102,7 +136,7 @@ function course_reload() {
       now_left.push(e)
     }
    })*/
-     console.log(now_left.length)
+     console.log("有" +now_left.length + "堂課還沒滿")
      var userId = 'Uf6f7dbaf8f52b91d217816ba6eb6cd8e'
      var sendMsg = '還有餘額 快去搶課!\n'
      if(now_left.length == 0){ 
@@ -110,20 +144,22 @@ function course_reload() {
      // bot.push(userId,"NONONOOOOO")
      }else{
     
+//	func.autoAddClass('A9','061') 
         for(var i = 0;i < now_left.length ; i++){
-           sendMsg = sendMsg  + 'A9 '+ now_left[i].courseCode + ' ' + now_left[i].courseName +' '+ now_left[i].time+'\n'
+           sendMsg = sendMsg  + 'A9 '+ now_left[i].courseCode + ' ' + now_left[i].courseName +' '+ now_left[i].time+ ",餘額" +now_left[i].left + "人\n"
         }
         bot.push(userId,sendMsg)
     }
   }
   })
-  timer = setInterval(course_reload,10000)
+  timer = setInterval(course_reload,5000)
 }
 
 
 //server
 const app = express()
 const linebotParser = bot.parser()
+//w_left[i].time
 
 app.post('/',linebotParser)
 

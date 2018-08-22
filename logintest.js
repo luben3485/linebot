@@ -1,5 +1,9 @@
 const request = require('request')
 
+
+var func = {
+	
+	autoAddClass: function(depno,seqno){
 var login_url = 'https://course.ncku.edu.tw/course/login.php'
 var data ={
     'stu_no':"E94056178",
@@ -73,13 +77,55 @@ request.post({
                     'Upgrade-Insecure-Requests':'1',
                     'User-Agent':'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.132 Safari/537.36'
                 }
-                request.get({url:ininlogin_url,headers : ininhead},function(error,response,body){
-                    setTimeout(function() {
+		var inindata = {
+			"STEP":"0",
+			"depNo":depno,
+			"seqNo":seqno,
+			"cer":"FUCK",
+
+		}
+                request.post({
+			url:ininlogin_url,
+			headers : ininhead,
+			form:inindata
+		},function(error,response,body){
+                  //  setTimeout(function() {
 
                     if(error)
                         console.log(error)
                     if (!error && response.statusCode == 200) {
-                        console.log(body)
+                       	console.log("已經搶到課準備自動登出......")
+			//console.log(body)
+
+
+           		var inlogin_url = 'https://course.ncku.edu.tw/course/logout.php'
+            		var inhead = {
+            	 	'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8',
+			'Accept-Encoding': 'gzip, deflate, br',
+			'Accept-Language': 'zh-TW,zh;q=0.9,en-US;q=0.8,en;q=0.7',
+			'Connection': 'keep-alive',
+			'Cookie': 'c_stu_no=; c_passwd=; lang=CHT; _ga=GA1.3.1018205750.1517731885; PHPSESSID=E940561787330a98e095e1d3c5c7dceb0da166ffd',
+			'Host': 'course.ncku.edu.tw',
+			'Referer': 'https://course.ncku.edu.tw/course/index.php?lang=CHT',
+			'Upgrade-Insecure-Requests': '1',
+			'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/68.0.3440.106 Safari/537.36'	
+
+			} 
+            
+           		request.get({
+           		  	headers:inhead,
+             			url: inlogin_url,
+           		},
+           		function (error, response, body) {
+
+                    		if(error)
+                        		console.log(error)
+                    		if (!error && response.statusCode == 200) {
+					console.log("\n已經自動登出....")
+				}
+			})
+
+
                     }   
 
 
@@ -91,7 +137,7 @@ request.post({
 
 
 
-                    }, 3000);
+                //    }, 3000);
 
                 })
 
@@ -100,3 +146,21 @@ request.post({
            })
         }
   })
+
+}
+
+}//var func = {
+
+module.exports = func;
+
+
+
+
+
+
+
+
+
+
+
+
