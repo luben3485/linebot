@@ -4,17 +4,17 @@ const getJSON = require('get-json')
 const cheerio = require('cheerio')
 const request = require('request')
 const func = require('./logintest')
+const config = require('./config.json') 
 const url = "http://course-query.acad.ncku.edu.tw/qry/qry001.php?dept_no=A9"
 var port = '2267' 
 var bot = linebot({
-  channelId:'1560928773',
-  channelSecret:'976346f7b7e48bd94df30eaf2529d4cd',
-  channelAccessToken:'5ObAymA8Fs8ahSmejCSCiGrIMZgy6y6yCR0VWvpzZPzXbic58zqQ4uAEjwS9MhnFIzNQjlPnhS02yDSQv+dW5lT61X/FZuTacCspW/ZjAQh661sPhloWKsFgPsKFZQZ02LMhrslflG3ImdCy1ICpQAdB04t89/1O/w1cDnyilFU='
-})
+  channelId:config.channelId,
+  channelSecret:config.channelSecret,
+  channelAccessToken:config.channelAccessToken})
 
 var timer
 var ban = ['051','242','244','246','284','304','601','603','604','605']
-var like = ['045','046','049','052','042','302','311','321','341','382','441','571','047','048']
+var like = ['045','049','052','042','302','311','321','341','382','441','571','047','048']
 course_reload()
 
 bot.on('message',function(event){
@@ -76,7 +76,7 @@ bot.on('message',function(event){
      }else if(msg.indexOf('dislike') != -1){
        var index = -1
        for(var i =0 ; i < like.length ; i++){
-          var likeed = msg.split(' ')[1]
+          var liked = msg.split(' ')[1]
           if(liked == like[i]){
             index = i
             break
@@ -160,13 +160,15 @@ function course_reload() {
        	    sendMsg = sendMsg  + 'A9 '+ now_left[i].courseCode + ' ' + now_left[i].courseName +' '+ now_left[i].time+ ",餘額" +now_left[i].left + "人\n"
 	    for(var j = 0;j<like.length;j++){
 	    	if(now_left[i].courseCode == like[j]){
-            	    func.autoAddClass('A9',now_left[i].courseCode)
-		    var sendAddClassMsg = '已幫你搶到 ' + now_left[i].courseName + ' 時間為 ' + now_left[i].time + ' 爽齁ㄏㄏ\n' 
+		    var stu_no = config.stu_no
+		    var passwd = config.passwd
+            	    func.autoAddClass(stu_no,passwd,'A9',now_left[i].courseCode)
+		    var sendAddClassMsg = '已幫你搶到 ' + now_left[i].courseName + now_left[i].courseCode + ' 時間為 ' + now_left[i].time + ' 爽齁ㄏㄏ\n' 
 		    bot.push(userId,sendAddClassMsg)
 		}
 	    }
         }
-//        bot.push(userId,sendMsg)
+        bot.push(userId,sendMsg)
     }
   }
   })

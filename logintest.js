@@ -3,11 +3,11 @@ const request = require('request')
 
 var func = {
 	
-	autoAddClass: function(depno,seqno){
+	autoAddClass: function(stu,passwd,depno,seqno){
 var login_url = 'https://course.ncku.edu.tw/course/login.php'
 var data ={
-    'stu_no':"E94056178",
-    'passwd':"578d9eba02ea8ffeada2c8eadc14c67fe713c0c16f92d98afbee030849c97223",
+    'stu_no':stu,
+    'passwd':passwd,
     'lang':"CHT"
 }
 var head = {
