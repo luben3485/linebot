@@ -35,7 +35,7 @@ request.post({
         if(error)
           console.log(error)
         if (!error && response.statusCode == 200) {
-//           console.log(body)
+       //    console.log(body)
             var inlogin_url = 'https://course.ncku.edu.tw/course/index.php'
             var indata ={
                 'lang':"CHT"
@@ -64,7 +64,7 @@ request.post({
              if(error)
                 console.log(error)
              if (!error && response.statusCode == 200) {
-             //   console.log(body)
+              //  console.log(body)
                 var ininlogin_url = 'https://course.ncku.edu.tw/course/second2.php'
                 var ininhead = {
                     'Accept':'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8',
@@ -95,7 +95,7 @@ request.post({
                         console.log(error)
                     if (!error && response.statusCode == 200) {
                        	console.log("已經搶到課準備自動登出......")
-			//console.log(body)
+		//	console.log(body)
 
 
            		var inlogin_url = 'https://course.ncku.edu.tw/course/logout.php'

@@ -14,7 +14,7 @@ var bot = linebot({
 
 var timer
 var ban = ['201','263','051','242','244','246','284','304','601','603','604','605']
-var like = ['045','049','052','042','302','311','321','341','382','441','571','047','048']
+var like = ['045','049','052','042','311','321','341','382','441','571','047','048']
 course_reload()
 
 bot.on('message',function(event){
@@ -172,7 +172,7 @@ function course_reload() {
     }
   }
   })
-  timer = setInterval(course_reload,5000)
+  timer = setInterval(course_reload,1000)
 }
 
 
