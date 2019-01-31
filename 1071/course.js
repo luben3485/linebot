@@ -3,23 +3,23 @@ const express = require('express')
 const getJSON = require('get-json')
 const cheerio = require('cheerio')
 const request = require('request')
-const func = require('./login')
+const func = require('./autoAdd')
 const config = require('./config.json') 
 const url = "http://course-query.acad.ncku.edu.tw/qry/qry001.php?dept_no=A9"
-var port = '2267' 
+var port = '2266' 
 var bot = linebot({
   channelId:config.channelId,
   channelSecret:config.channelSecret,
   channelAccessToken:config.channelAccessToken})
-
+var count=0
 var timer
-var ban = ['201','263','051','242','244','246','284','304','601','603','604','605']
-var like = ['045','049','052','042','311','321','341','382','441','571','047','048']
+var ban = ['201','263','051','242','244','246','284','304','601','603','604','605','004','023','081','061','162','163','183','204','206','268','281','289']
+var like = ['343','224','341','322','302','434','123','140','141','142','143','160','161','162','164','210','288','302','321','440','480','120','322']
 course_reload()
 
 bot.on('message',function(event){
-  console.log('87')
-  console.log(event)
+  //console.log('87')
+  //console.log(event)
   
   if(event.message.type == 'text'){
     
@@ -103,8 +103,26 @@ bot.on('message',function(event){
           like.push(likecode)
           event.reply(likecode + " 已加入搶課名單！")
         }
-     }
+     }else if(msg.indexOf('add') != -1){
+		
+		std_no = msg.split(' ')[1]
+		depno = msg.split(' ')[2]
+		seqno = msg.split(' ')[3]
+		func.autoAddClass(std_no,depno,seqno)
+        console.log('開始幫'+std_no+'搶喔')
+		event.reply('正在幫'+std_no+'搶 '+depno +' '+seqno+' ，請稍候自行確認。（如有衝堂可能搶課失敗）' )
      
+     }else if(msg.indexOf('delete') != -1 || msg.indexOf('delete') != -1){
+		std_no = msg.split(' ')[1]
+		depno = msg.split(' ')[2]
+		seqno = msg.split(' ')[3]
+		//func.autoDeleteClass(std_no,depno,seqno)
+        event.reply('正在幫'+std_no+'棄選 '+depno +' '+seqno+' ，請稍候自行確認。' )
+	 }else if(msg.indexOf('help')!=-1){
+        event.reply('常見指令如下:\n***********************\nopen(開啟選課通知)\nclose(關閉選課通知)\n**目前只有管理員看得到通知**\nbanlist (顯示黑名單課程)\nlikelist (顯示白名單課程)\nban <seqno> (將A9加入黑名單)\nunban <seqno> (將A9移除黑名單)\nlike <seqno> (將A9加入白名單)\ndislike <seqno>(將A9移除白名單)\nadd <std_no> <depno> <seqno>\n(幫特定人選特定課程嘻嘻 )')
+
+	}
+
   }
 })
 
@@ -153,26 +171,37 @@ function course_reload() {
      // console.log("NOOO");
      // bot.push(userId,"NONONOOOOO")
      }else{
-    
+   		 
 //	func.autoAddClass('A9','061') 
         for(var i = 0;i < now_left.length ; i++){
+			if(now_left[i].courseCode == '343'){
+				func.autoAddClass('E94051128','A9','343')
+				func.autoAddClass('E94051128','A9','343')
+				func.autoAddClass('E94051128','A9','343')
 
+			}
        	    sendMsg = sendMsg  + 'A9 '+ now_left[i].courseCode + ' ' + now_left[i].courseName +' '+ now_left[i].time+ ",餘額" +now_left[i].left + "人\n"
 	    for(var j = 0;j<like.length;j++){
 	    	if(now_left[i].courseCode == like[j]){
-		    var stu_no = config.stu_no
-		    var passwd = config.passwd
-            	    func.autoAddClass(stu_no,passwd,'A9',now_left[i].courseCode)
-		    var sendAddClassMsg = '已幫你搶到 ' + now_left[i].courseName + now_left[i].courseCode + ' 時間為 ' + now_left[i].time + ' 爽齁ㄏㄏ\n' 
+		    var std_no = config.std_no
+            	    func.autoAddClass(std_no,'A9',now_left[i].courseCode)
+            	    func.autoAddClass(std_no,'A9',now_left[i].courseCode)
+            	    func.autoAddClass(std_no,'A9',now_left[i].courseCode)
+		    var sendAddClassMsg = '已試著幫你搶到 ' + now_left[i].courseName + now_left[i].courseCode + ' 時間為 ' + now_left[i].time + '\n' 
 		    bot.push(userId,sendAddClassMsg)
-		}
+			}
 	    }
         }
-        bot.push(userId,sendMsg)
+        //bot.push(userId,sendMsg)
+		
     }
+	count+=1
+	if((count%10)==0){
+		bot.push(userId,'search:'+count)
+	}
   }
   })
-  timer = setInterval(course_reload,1000)
+  timer = setInterval(course_reload,3000)
 }
 
 
@@ -185,7 +214,7 @@ app.post('/',linebotParser)
 
 
 var server = app.listen(port,function(){
-  console.log('running on port'+ port+'!')
+  console.log('running on port '+ port+'!')
 })
 
 
