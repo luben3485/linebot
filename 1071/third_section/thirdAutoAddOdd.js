@@ -1,7 +1,7 @@
 const request = require('request')
 
 
-var func = {
+var func_odd = {
 	
 	autoAddClass: function(stu,passwd,depno,seqno){
 var login_url = 'https://course.ncku.edu.tw/course/login.php'
@@ -18,7 +18,7 @@ var head = {
   'Connection':'keep-alive',
   'Content-Length':'97',
   'Content-Type':'application/x-www-form-urlencoded',
-  'Cookie':'lang=CHT; c_stu_no=; c_passwd=; PHPSESSID=E940561787330a98e095e1d3c5c7dceb0da166ffd; _ga=GA1.3.1018205750.1517731885; _gid=GA1.3.1824998560.1517731885',
+  'Cookie':'lang=CHT; c_stu_no=; c_passwd=; PHPSESSID=E940562337330a98e095e1d3c5c7dceb0da166ffd; _ga=GA1.3.1018205750.1517731885; _gid=GA1.3.1824998560.1517731885',
   'Host':'course.ncku.edu.tw',
   'Origin':'https://course.ncku.edu.tw',
   'Referer':'https://course.ncku.edu.tw/course/signin.php',
@@ -48,7 +48,7 @@ request.post({
                 'Accept-Encoding':'gzip, deflate, br',
                 'Accept-Language':'zh-TW,zh;q=0.9,en-US;q=0.8,en;q=0.7',
                 'Connection':'keep-alive',
-                'Cookie':'lang=CHT; c_stu_no=; c_passwd=; PHPSESSID=E940561787330a98e095e1d3c5c7dceb0da166ffd; _ga=GA1.3.1018205750.1517731885; _gid=GA1.3.1824998560.1517731885',
+                'Cookie':'lang=CHT; c_stu_no=; c_passwd=; PHPSESSID=E940562337330a98e095e1d3c5c7dceb0da166ffd; _ga=GA1.3.1018205750.1517731885; _gid=GA1.3.1824998560.1517731885',
                 'Host':'course.ncku.edu.tw',
                 'Referer':'https://course.ncku.edu.tw/course/login.php',
                 'Upgrade-Insecure-Requests':'1',
@@ -65,13 +65,13 @@ request.post({
                 console.log(error)
              if (!error && response.statusCode == 200) {
               //  console.log(body)
-                var ininlogin_url = 'https://course.ncku.edu.tw/course/second2.php'
+                var ininlogin_url = 'https://course.ncku.edu.tw/course/third2.php'
                 var ininhead = {
                     'Accept':'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8',
                     'Accept-Encoding':'gzip, deflate, br',
                     'Accept-Language':'zh-TW,zh;q=0.9,en-US;q=0.8,en;q=0.7',
                     'Connection':'keep-alive',
-                    'Cookie':'lang=CHT; c_stu_no=; c_passwd=; PHPSESSID=E940561787330a98e095e1d3c5c7dceb0da166ffd; _ga=GA1.3.1018205750.1517731885; _gid=GA1.3.1824998560.1517731885',
+                    'Cookie':'lang=CHT; c_stu_no=; c_passwd=; PHPSESSID=E940562337330a98e095e1d3c5c7dceb0da166ffd; _ga=GA1.3.1018205750.1517731885; _gid=GA1.3.1824998560.1517731885',
                     'Host':'course.ncku.edu.tw',
                     'Referer':'https://course.ncku.edu.tw/course/index.php?lang=CHT',
                     'Upgrade-Insecure-Requests':'1',
@@ -94,8 +94,8 @@ request.post({
                     if(error)
                         console.log(error)
                     if (!error && response.statusCode == 200) {
-                       	console.log("已經搶到課準備自動登出......")
-		//console.log(body)
+                       	console.log("試著搶課準備自動登出......")
+		//	console.log(body)
 
 
            		var inlogin_url = 'https://course.ncku.edu.tw/course/logout.php'
@@ -104,7 +104,7 @@ request.post({
 			'Accept-Encoding': 'gzip, deflate, br',
 			'Accept-Language': 'zh-TW,zh;q=0.9,en-US;q=0.8,en;q=0.7',
 			'Connection': 'keep-alive',
-			'Cookie': 'c_stu_no=; c_passwd=; lang=CHT; _ga=GA1.3.1018205750.1517731885; PHPSESSID=E940561787330a98e095e1d3c5c7dceb0da166ffd',
+			'Cookie': 'c_stu_no=; c_passwd=; lang=CHT; _ga=GA1.3.1018205750.1517731885; PHPSESSID=E940562337330a98e095e1d3c5c7dceb0da166ffd',
 			'Host': 'course.ncku.edu.tw',
 			'Referer': 'https://course.ncku.edu.tw/course/index.php?lang=CHT',
 			'Upgrade-Insecure-Requests': '1',
@@ -151,7 +151,7 @@ request.post({
 
 }//var func = {
 
-module.exports = func;
+module.exports = func_odd;
 
 
 

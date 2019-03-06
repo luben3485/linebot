@@ -6,7 +6,7 @@ var func = {
 	autoAddClass: function(stdno,depno,seqno){
 		var cookie = 'lang=CHT; c_stu_no=; c_passwd=; PHPSESSID='+stdno+'7330a98e095e1d3c5c7dceb0da166ffd; _ga=GA1.3.1018205750.1517731885; _gid=GA1.3.1824998560.1517731885'
 		//var cookie = 'lang=CHT; c_stu_no=; c_passwd=; PHPSESSID='+stdno+'7330a98e095e1d3c5c7dceb0da166ffd'
-		var login_url = 'https://course.ncku.edu.tw/course/second2.php'
+		var login_url = 'https://course.ncku.edu.tw/course/third2.php'
 		var head = {
                		'Accept':'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8',
                     'Accept-Encoding':'gzip, deflate, br',

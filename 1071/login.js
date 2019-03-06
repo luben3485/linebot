@@ -1,7 +1,7 @@
 const request = require('request')
 
 
-var func = {
+var func_odd = {
 	
 	autoAddClass: function(stu,passwd,depno,seqno){
 var login_url = 'https://course.ncku.edu.tw/course/login.php'
@@ -94,7 +94,7 @@ request.post({
                     if(error)
                         console.log(error)
                     if (!error && response.statusCode == 200) {
-                       	console.log("已經搶到課準備自動登出......")
+                       	console.log("試著搶課準備自動登出......")
 		//	console.log(body)
 
 
@@ -151,7 +151,7 @@ request.post({
 
 }//var func = {
 
-module.exports = func;
+module.exports = func_odd;
 
 
 

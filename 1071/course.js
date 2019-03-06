@@ -4,6 +4,7 @@ const getJSON = require('get-json')
 const cheerio = require('cheerio')
 const request = require('request')
 const func = require('./autoAdd')
+const func_odd = require('./login')
 const config = require('./config.json') 
 const url = "http://course-query.acad.ncku.edu.tw/qry/qry001.php?dept_no=A9"
 var port = '2266' 
@@ -11,6 +12,7 @@ var bot = linebot({
   channelId:config.channelId,
   channelSecret:config.channelSecret,
   channelAccessToken:config.channelAccessToken})
+var passwd = config.passwd
 var count=0
 var timer
 var ban = ['201','263','051','242','244','246','284','304','601','603','604','605','004','023','081','061','162','163','183','204','206','268','281','289']
@@ -108,8 +110,11 @@ bot.on('message',function(event){
 		std_no = msg.split(' ')[1]
 		depno = msg.split(' ')[2]
 		seqno = msg.split(' ')[3]
-		func.autoAddClass(std_no,depno,seqno)
-        console.log('開始幫'+std_no+'搶喔')
+		//func.autoAddClass(std_no,depno,seqno)
+		//func.autoAddClass(std_no,depno,seqno)
+        func_odd.autoAddClass(std_no,passwd,depno,seqno)
+        func_odd.autoAddClass(std_no,passwd,depno,seqno)
+		console.log('開始幫'+std_no+'搶喔')
 		event.reply('正在幫'+std_no+'搶 '+depno +' '+seqno+' ，請稍候自行確認。（如有衝堂可能搶課失敗）' )
      
      }else if(msg.indexOf('delete') != -1 || msg.indexOf('delete') != -1){
@@ -184,10 +189,12 @@ function course_reload() {
 	    for(var j = 0;j<like.length;j++){
 	    	if(now_left[i].courseCode == like[j]){
 		    var std_no = config.std_no
-            	    func.autoAddClass(std_no,'A9',now_left[i].courseCode)
-            	    func.autoAddClass(std_no,'A9',now_left[i].courseCode)
-            	    func.autoAddClass(std_no,'A9',now_left[i].courseCode)
-		    var sendAddClassMsg = '已試著幫你搶到 ' + now_left[i].courseName + now_left[i].courseCode + ' 時間為 ' + now_left[i].time + '\n' 
+            	    //func.autoAddClass(std_no,'A9',now_left[i].courseCode)
+            	    //func.autoAddClass(std_no,'A9',now_left[i].courseCode)
+            	    //func.autoAddClass(std_no,'A9',now_left[i].courseCode)
+        			func_odd.autoAddClass(std_no,passwd,'A9',now_left[i].courseCode)
+        			func_odd.autoAddClass(std_no,passwd,'A9',now_left[i].courseCode)
+		    var sendAddClassMsg = '已試著幫 '+std_no+' 搶到 ' + now_left[i].courseName + ' '+now_left[i].courseCode + ' 時間為 ' + now_left[i].time + '\n' 
 		    bot.push(userId,sendAddClassMsg)
 			}
 	    }
@@ -201,7 +208,7 @@ function course_reload() {
 	}
   }
   })
-  timer = setInterval(course_reload,3000)
+  timer = setInterval(course_reload,300)
 }
 
 
