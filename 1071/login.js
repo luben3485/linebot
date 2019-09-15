@@ -65,7 +65,7 @@ request.post({
                 console.log(error)
              if (!error && response.statusCode == 200) {
               //  console.log(body)
-                var ininlogin_url = 'https://course.ncku.edu.tw/course/second2.php'
+                var ininlogin_url = 'https://course.ncku.edu.tw/course/third2.php'
                 var ininhead = {
                     'Accept':'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8',
                     'Accept-Encoding':'gzip, deflate, br',

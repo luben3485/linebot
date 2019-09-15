@@ -6,7 +6,7 @@ const request = require('request')
 const func = require('./autoAdd')
 const func_odd = require('./login')
 const config = require('./config.json') 
-const url = "http://course-query.acad.ncku.edu.tw/qry/qry001.php?dept_no=A9"
+const url = "http://course-query.acad.ncku.edu.tw/qry/qry001.php?dept_no=P7"
 var port = '2266' 
 var bot = linebot({
   channelId:config.channelId,
@@ -15,8 +15,10 @@ var bot = linebot({
 var passwd = config.passwd
 var count=0
 var timer
-var ban = ['201','263','051','242','244','246','284','304','601','603','604','605','004','023','081','061','162','163','183','204','206','268','281','289']
-var like = ['343','224','341','322','302','434','123','140','141','142','143','160','161','162','164','210','288','302','321','440','480','120','322']
+//var ban = ['201','263','051','242','244','246','284','304','601','603','604','605','004','023','081','061','162','163','183','204','206','268','281','289']
+//var like = ['343','224','341','322','302','434','123','140','141','142','143','160','161','162','164','210','288','302','321','440','480','120','322']
+var ban = []
+var like = ['016']
 course_reload()
 
 bot.on('message',function(event){
@@ -143,12 +145,21 @@ function course_reload() {
         courses.push($(this).text().split('\n'))
      })
      courses = courses.map(course => ({
+/*        
         courseName: course[11],
         courseCode: course[3],
         courseClass: course[8],
         left:course[15],
         time:course[16],
         teacher:course[13]
+*/
+        
+        courseName: course[15],
+        courseCode: course[5],
+        courseClass: course[6],
+        left:course[19],
+        time:course[20],
+        teacher:course[17]
      }))
     
    
@@ -180,9 +191,9 @@ function course_reload() {
 //	func.autoAddClass('A9','061') 
         for(var i = 0;i < now_left.length ; i++){
 			if(now_left[i].courseCode == '343'){
-				func.autoAddClass('E94051128','A9','343')
-				func.autoAddClass('E94051128','A9','343')
-				func.autoAddClass('E94051128','A9','343')
+				//func.autoAddClass('E94051128','A9','343')
+				//func.autoAddClass('E94051128','A9','343')
+				//func.autoAddClass('E94051128','A9','343')
 
 			}
        	    sendMsg = sendMsg  + 'A9 '+ now_left[i].courseCode + ' ' + now_left[i].courseName +' '+ now_left[i].time+ ",餘額" +now_left[i].left + "人\n"

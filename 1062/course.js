@@ -120,12 +120,21 @@ function course_reload() {
         courses.push($(this).text().split('\n'))
      })
      courses = courses.map(course => ({
+        /*
         courseName: course[11],
         courseCode: course[3],
         courseClass: course[8],
         left:course[15],
         time:course[16],
         teacher:course[13]
+        */
+        courseName: course[15],
+        courseCode: course[5],
+        courseClass: course[6],
+        left:course[19],
+        time:course[20],
+        teacher:course[17]
+
      }))
     
    

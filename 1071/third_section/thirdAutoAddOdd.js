@@ -35,7 +35,7 @@ request.post({
         if(error)
           console.log(error)
         if (!error && response.statusCode == 200) {
-       //    console.log(body)
+           //console.log('success')
             var inlogin_url = 'https://course.ncku.edu.tw/course/index.php'
             var indata ={
                 'lang':"CHT"

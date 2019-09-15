@@ -1,11 +1,11 @@
-const url = "http://course-query.acad.ncku.edu.tw/qry/qry001.php?dept_no=A2"
+const url = "http://course-query.acad.ncku.edu.tw/qry/qry001.php?dept_no=P7"
 const cheerio = require('cheerio')
 const request = require('request') 
 const func_odd = require('./thirdAutoAddOdd')
 const config = require('./config.json')
 course_reload()
 ban = []
-like = ['258']
+like = ['016']
 var count = 0
 var std_no = config.std_no
 var passwd = config.passwd
@@ -23,18 +23,25 @@ function course_reload() {
         courses.push($(this).text().split('\n'))
      })
      courses = courses.map(course => ({
+/*
         courseName: course[11],
         courseCode: course[3],
         courseClass: course[8],
         left:course[15],
         time:course[16],
         teacher:course[13]
+*/
+        courseName: course[15],
+        courseCode: course[6],
+        courseClass: course[7],
+        left:course[19],
+        time:course[20],
+        teacher:course[17]
      }))
     
-   
    var now_left = []
    for(var i = 0;i<courses.length;i++){
-   	 if(courses[i].left != '額滿' && parseInt(courses[i].left) <20){
+    if(courses[i].left != '額滿' && parseInt(courses[i].left) <20){
        var isban = 0
        for(var j = 0 ; j < ban.length ; j++){
          if(courses[i].courseCode == ban[j])
@@ -50,11 +57,11 @@ function course_reload() {
      //console.log('課都滿了...') 
    }else{
      for(var i = 0;i < now_left.length ; i++){
-       sendMsg = sendMsg  + 'A2 '+ now_left[i].courseCode + ' ' + now_left[i].courseName +' '+ now_left[i].time+ ",餘額" +now_left[i].left + "人\n"
+       sendMsg = sendMsg  + 'P7 '+ now_left[i].courseCode + ' ' + now_left[i].courseName +' '+ now_left[i].time+ ",餘額" +now_left[i].left + "人\n"
 	   for(var j = 0;j<like.length;j++){
 	     if(now_left[i].courseCode == like[j]){
-           func_odd.autoAddClass(std_no,passwd,'A2',now_left[i].courseCode)
-           func_odd.autoAddClass(std_no,passwd,'A2',now_left[i].courseCode)
+           func_odd.autoAddClass(std_no,passwd,'P7',now_left[i].courseCode)
+           func_odd.autoAddClass(std_no,passwd,'P7',now_left[i].courseCode)
 		   var sendAddClassMsg = '已試著幫 '+std_no+' 搶到 ' + now_left[i].courseName + ' '+now_left[i].courseCode + ' 時間為 ' + now_left[i].time + '\n' 
 		   count = count + 1
 		   console.log(sendAddClassMsg)
