@@ -18,7 +18,7 @@ var timer
 //var ban = ['201','263','051','242','244','246','284','304','601','603','604','605','004','023','081','061','162','163','183','204','206','268','281','289']
 //var like = ['343','224','341','322','302','434','123','140','141','142','143','160','161','162','164','210','288','302','321','440','480','120','322']
 var ban = []
-var like = ['016']
+var like = ['016','013']
 course_reload()
 
 bot.on('message',function(event){
@@ -155,8 +155,8 @@ function course_reload() {
 */
         
         courseName: course[15],
-        courseCode: course[5],
-        courseClass: course[6],
+        courseCode: course[6],
+        courseClass: course[7],
         left:course[19],
         time:course[20],
         teacher:course[17]
@@ -196,26 +196,26 @@ function course_reload() {
 				//func.autoAddClass('E94051128','A9','343')
 
 			}
-       	    sendMsg = sendMsg  + 'A9 '+ now_left[i].courseCode + ' ' + now_left[i].courseName +' '+ now_left[i].time+ ",餘額" +now_left[i].left + "人\n"
+       	    sendMsg = sendMsg  + 'P7 '+ now_left[i].courseCode + ' ' + now_left[i].courseName +' '+ now_left[i].time+ ",餘額" +now_left[i].left + "人\n"
 	    for(var j = 0;j<like.length;j++){
 	    	if(now_left[i].courseCode == like[j]){
 		    var std_no = config.std_no
             	    //func.autoAddClass(std_no,'A9',now_left[i].courseCode)
             	    //func.autoAddClass(std_no,'A9',now_left[i].courseCode)
             	    //func.autoAddClass(std_no,'A9',now_left[i].courseCode)
-        			func_odd.autoAddClass(std_no,passwd,'A9',now_left[i].courseCode)
-        			func_odd.autoAddClass(std_no,passwd,'A9',now_left[i].courseCode)
+        			func_odd.autoAddClass(std_no,passwd,'P7',now_left[i].courseCode)
+        			func_odd.autoAddClass(std_no,passwd,'P7',now_left[i].courseCode)
 		    var sendAddClassMsg = '已試著幫 '+std_no+' 搶到 ' + now_left[i].courseName + ' '+now_left[i].courseCode + ' 時間為 ' + now_left[i].time + '\n' 
 		    bot.push(userId,sendAddClassMsg)
 			}
 	    }
         }
-        //bot.push(userId,sendMsg)
+        bot.push(userId,sendMsg)
 		
     }
 	count+=1
 	if((count%10)==0){
-		bot.push(userId,'search:'+count)
+		//bot.push(userId,'search:'+count)
 	}
   }
   })
